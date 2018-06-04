@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD 11)
 #add_executable(EzloTestTask main.cpp)
 #target_link_libraries(EzloTestTask ${Boost_LIBRARIES})
 
-add_executable(server session.cpp server.cpp exceptions.h)
+add_executable(server session.cpp server.cpp exceptions.h session.h)
 target_link_libraries(server ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
 add_executable(client client.cpp)

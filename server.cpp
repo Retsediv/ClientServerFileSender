@@ -13,11 +13,12 @@
 #include <fstream>
 #include <sstream>
 
-#include "session.cpp"
+#include "session.h"
 
 using namespace boost;
 using namespace boost::system;
 using namespace boost::asio;
+using boost::asio::ip::tcp;
 namespace fs = boost::filesystem;
 
 class server {
