@@ -5,9 +5,9 @@
 #include <boost/thread/thread.hpp>
 #include <boost/bind.hpp>
 #include <boost/array.hpp>
+#include "boost/filesystem.hpp"
 #include <string>
 #include <memory>
-#include "boost/filesystem.hpp"
 #include <thread>
 #include <vector>
 #include <fstream>
@@ -61,11 +61,26 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+    uint NUM_THREADS = 4;
+
     boost::asio::io_context io_context;
+    boost::asio::io_context::work some_work(io_context);
+
+
+//    const ip::tcp::endpoint endpoint{ip::tcp::v4(), std::atoi(argv[1])};
+//    ip::tcp::acceptor acceptor{io_context, endpoint};
 
     server s(io_context, std::atoi(argv[1]), argv[2]);
 
+//    acceptor.listen();
+
+    boost::thread_group threads;
+    for (int i = 0; i < NUM_THREADS; ++i) {
+        threads.create_thread(boost::bind(&io_context::run, &io_context));
+    }
+
     io_context.run();
+    threads.join_all();
 
     return 0;
 }

@@ -50,8 +50,6 @@ void client::handle_connect(const boost::system::error_code &err) {
 //                exit(-1);
 //            }
 
-
-
             size_t file_size = source_file.tellg();
             source_file.seekg(0);
 
