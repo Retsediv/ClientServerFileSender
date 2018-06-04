@@ -25,8 +25,6 @@ private:
         max_length = 1024
     };
 
-    char data_[max_length];
-
     boost::array<char, 1024> buf_;
     boost::filesystem::path destination_;
 

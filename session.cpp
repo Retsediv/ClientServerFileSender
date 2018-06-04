@@ -46,7 +46,7 @@ void session::handle_read() {
             }
         }
 
-        send_response("Send was successfully received and saved");
+        send_response("File was successfully received and saved");
     }
     catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
