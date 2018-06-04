@@ -25,7 +25,7 @@ private:
         max_length = 1024
     };
 
-    boost::array<char, 1024> buf_;
+    boost::array<char, 1024> buf_{};
     boost::filesystem::path destination_;
 
     std::string file_path_;
