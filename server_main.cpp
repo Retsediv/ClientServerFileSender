@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "server/server.h"
-
 #include "helpers.h"
 
 int main(int argc, char *argv[]) {
