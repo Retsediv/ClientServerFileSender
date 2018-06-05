@@ -28,7 +28,6 @@ private:
     boost::asio::ip::tcp::resolver resolver_;
     boost::asio::ip::tcp::socket socket_;
     boost::asio::streambuf request_;
-    boost::asio::streambuf response_;
     std::string filepath;
     std::string ip_;
     std::string port_;

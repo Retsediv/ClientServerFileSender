@@ -25,15 +25,21 @@ void io_context_pool::run() {
         threads.push_back(thread);
     }
 
-    // Wait for all threads in the pool to exit.
-    for (std::size_t i = 0; i < threads.size(); ++i)
-        threads[i]->join();
+    // Wait for all threads in the pool to exit
+    for(const auto &t : threads)
+        t->join();
+
+//    for (std::size_t i = 0; i < threads.size(); ++i)
+//        threads[i]->join();
 }
 
 void io_context_pool::stop() {
     // Explicitly stop all io_contexts.
-    for (std::size_t i = 0; i < io_contexts_.size(); ++i)
-        io_contexts_[i]->stop();
+    for(const auto &io_c : io_contexts_)
+        io_c->stop();
+
+//    for (std::size_t i = 0; i < io_contexts_.size(); ++i)
+//        io_contexts_[i]->stop();
 }
 
 boost::asio::io_context &io_context_pool::get_io_context() {

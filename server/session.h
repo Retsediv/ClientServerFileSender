@@ -21,9 +21,6 @@ public:
 
 private:
     boost::asio::ip::tcp::socket socket_;
-    enum {
-        max_length = 1024
-    };
 
     boost::array<char, 1024> buf_{};
     boost::filesystem::path destination_;

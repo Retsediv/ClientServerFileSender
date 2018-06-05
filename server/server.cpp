@@ -11,11 +11,11 @@ server::server(const std::string &port, const std::string &dest, size_t io_conte
         io_context_pool_(io_context_pool_size),
         acceptor_(io_context_pool_.get_io_context()),
         destination_(fs::path{dest})
-    {
+{
 
     // Open the acceptor with the option to reuse the address (i.e. SO_REUSEADDR).
-    boost::asio::ip::tcp::resolver resolver(acceptor_.get_executor().context());
-    boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve("127.0.0.1", port).begin();
+    tcp::resolver resolver(acceptor_.get_executor().context());
+    tcp::endpoint endpoint = *resolver.resolve("127.0.0.1", port).begin();
     acceptor_.open(endpoint.protocol());
     acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
     acceptor_.bind(endpoint);

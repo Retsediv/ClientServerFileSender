@@ -1,4 +1,5 @@
 #include "session.h"
+#include "../helpers.h"
 
 using boost::asio::ip::tcp;
 namespace fs = boost::filesystem;
@@ -6,6 +7,7 @@ namespace fs = boost::filesystem;
 void session::handle_read() {
     get_file_properties();
 
+    // getting and saving the file
     try {
         boost::asio::streambuf request_buf;
         std::istream request_stream(&request_buf);
@@ -13,36 +15,37 @@ void session::handle_read() {
 
         fs::path outfile_dest = destination_ / fs::path{file_path_};
 
-        // TODO: fix this shit
-//        if(fs::is_regular_file(outfile_dest)){
-//            std::cout << "such file is already exists: " << outfile_dest << std::endl;
-//        }
+        if (file_exists(outfile_dest.c_str())) {
+            send_response("Such file is already exists");
+            return;
+        }
 
         std::ofstream output_file(outfile_dest.c_str(), std::ios_base::binary);
+
         if (!output_file) {
             send_response("failed to create destination file");
-            std::cout << "failed to create destination file" << file_path_ << std::endl;
             return;
         }
 
         // write extra bytes to file
         do {
             request_stream.read(buf_.c_array(), (std::streamsize) buf_.size());
-            std::cout << "write extra bytes to file" << __FUNCTION__ << " write " << request_stream.gcount() << " bytes.\n";
             output_file.write(buf_.c_array(), request_stream.gcount());
         } while (request_stream.gcount() > 0);
 
-        while(true) {
-            size_t len = socket_.read_some(boost::asio::buffer(buf_), error);
-            if (len > 0)
-                output_file.write(buf_.c_array(), (std::streamsize) len);
+        while (true) {
+            size_t bytes_transferred = socket_.read_some(boost::asio::buffer(buf_));
+
+            if (bytes_transferred > 0)
+                output_file.write(buf_.c_array(), (std::streamsize) bytes_transferred);
 
             if (output_file.tellp() == (std::fstream::pos_type) (std::streamsize) file_size_)
                 break; // file was received
 
             if (error) {
-                std::cout << error << std::endl;
-                break;
+                std::cerr << "Error while operating with file: " << error << std::endl;
+                send_response("Error while operating with file");
+                return;
             }
         }
 
@@ -69,7 +72,8 @@ void session::send_response(const std::string &res) {
     boost::asio::streambuf request;
     std::ostream request_stream(&request);
     request_stream << res << "\n\n";
-    boost::asio::write(socket_, request);
 
-//    delete this;
+    std::cout << "Sending response: " << res << std::endl;
+
+    boost::asio::write(socket_, request);
 }
