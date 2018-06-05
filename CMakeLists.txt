@@ -8,7 +8,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(server server.cpp session.h session.cpp client.h)
+add_executable(server server.cpp session.h session.cpp client.h io_context_pool.cpp io_context_pool.h server_main.cpp server.h)
 target_link_libraries(server ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
 add_executable(client client.cpp)

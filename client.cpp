@@ -6,11 +6,6 @@ namespace fs = boost::filesystem;
 void client::handle_resolve(const boost::system::error_code &err,
                             const boost::asio::ip::tcp::resolver::results_type &endpoints) {
     if (!err) {
-        // Attempt a connection to each endpoint in the list until we
-        // successfully establish a connection.
-
-        std::cout << "before async_connect " << std::endl;
-
         boost::asio::async_connect(socket_, endpoints,
                                    boost::bind(&client::handle_connect, this,
                                                boost::asio::placeholders::error));
@@ -99,18 +94,8 @@ void client::handle_connect(const boost::system::error_code &err) {
 }
 
 void client::handle_response() {
-// Read the response status line. The response_ streambuf will
-    // automatically grow to accommodate the entire line. The growth may be
-    // limited by passing a maximum size to the streambuf constructor.
-
-//        boost::asio::async_read_until(socket_, response_, "\r\n",
-//                                      boost::bind(&client::handle_read_status_line, this,
-//                                                  boost::asio::placeholders::error));
-
-    std::cout << "HANDLIND RESPONSE!!!!!" << std::endl;
-
     boost::array<char, 1024> buf_;
-    size_t len = socket_.read_some(boost::asio::buffer(buf_));
+    socket_.read_some(boost::asio::buffer(buf_));
 
     std::cout << "Response: " << buf_.c_array() << std::endl;
 }
@@ -121,6 +106,20 @@ int main(int argc, char *argv[]) {
         std::cerr << "sample: " << argv[0] << " 127.0.0.1 1234 ./from/1.txt" << std::endl;
         return __LINE__;
     }
+
+    auto path = fs::path{argv[3]};
+
+    std::cout << path.c_str() << std::endl;
+
+//    if(!fs::exists(fs::status(path))){
+//        std::cout << "no such file: " << path.c_str() << std::endl;
+//        return EXIT_FAILURE;
+//    }
+
+//    if(fs::is_directory(path)){
+//        std::cout << "It's not a regular file: " << path.c_str() << std::endl;
+//        return EXIT_FAILURE;
+//    }
 
     boost::asio::io_context io_context;
     client c(io_context, argv[1], argv[2], argv[3]);
