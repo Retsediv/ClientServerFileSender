@@ -1,17 +1,13 @@
-#ifndef EZLOTESTTASK_HEPERS_H
-#define EZLOTESTTASK_HEPERS_H
+#ifndef EZLOTESTTASK_HELPERS_H
+#define EZLOTESTTASK_HELPERS_H
 
 #include <fstream>
 #include <sys/stat.h>
 
-bool file_exists(const char *filename) {
-    std::ifstream ifile(filename);
-    return (bool) ifile;
-}
+bool file_exists(const char *filename);
 
-bool is_regular_file(const char *path) {
-    struct stat s;
-    return (stat(path, &s) == 0) && (s.st_mode & S_IFREG);
-}
+bool is_regular_file(const char *path);
+
+bool is_directory(const char *path);
 
 #endif
