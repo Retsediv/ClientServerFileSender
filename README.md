@@ -16,15 +16,23 @@ $ make
 
 ### Run the server
 ```bash
-### ./client <port> <destination folder>
-$ ./server 5000 ./dest
+### ./server -p <port> -f <destination folder>
+$ ./server -p 1234 -f ./dest
+```
+For more details(help) check:
+```bash
+$ ./server -h
 ```
 
 ### Run the client
 ```bash
-### ./client <address> <port> <file to send>
-$ /client 127.0.0.1 5000 ./file.txt
+### ./client --host <ip or host> -p <port> -f <file to send>
+$ ./client --host 127.0.0.1 -p 5000 -f ./file.txt
 ```
 
+For more details(help) check:
+```bash
+$ ./cilent -h
+```
 
 

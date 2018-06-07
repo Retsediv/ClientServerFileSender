@@ -3,7 +3,9 @@ project(ClientServerFileSender)
 
 find_package(Threads)
 
-find_package(Boost REQUIRED COMPONENTS thread system filesystem)
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
+
+find_package(Boost REQUIRED COMPONENTS program_options thread system filesystem)
 include_directories(${Boost_INCLUDE_DIRS})
 
 set(CMAKE_CXX_STANDARD 14)
